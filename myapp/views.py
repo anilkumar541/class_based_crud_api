@@ -1,0 +1,59 @@
+import re
+from django.shortcuts import render
+
+# Create your views here.
+from rest_framework.views import APIView
+from myapp.models import Category
+from myapp.serializers import CategorySerializer
+from rest_framework.response import Response
+
+
+
+class CategoryListView(APIView):
+    def get(self, request):
+        category = Category.objects.all()
+        serializer= CategorySerializer(category, many=True)
+        return Response(serializer.data)
+
+class CategioryDetailView(APIView):
+    def get(self, request, pk):
+        category = Category.objects.get(pk=pk)
+        serializer= CategorySerializer(category, many=False)
+        return Response(serializer.data)    
+
+class CategoryCreateView(APIView):
+    def post(self, request):
+        serializer= CategorySerializer(data=request.data)    
+        if serializer.is_valid():
+            serializer.save()    
+            return Response(serializer.data)    
+        else:
+            return Response(serializer.errors)
+
+class CategoryUpdateView(APIView):
+    def get(self, request, pk):
+        category = Category.objects.get(pk=pk)
+        serializer= CategorySerializer(category, many=False)
+        return Response(serializer.data) 
+        
+    def put(self, request, pk):
+        category= Category.objects.get(pk=pk)            
+        serializer= CategorySerializer(category, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)    
+
+class CategoryDeleteView(APIView):
+    def delete(self, request, pk):
+        category= Category.objects.get(pk=pk) 
+        category.delete()
+        return Response("deleted")
+
+
+
+
+
+
+
