@@ -45,7 +45,7 @@ class CategoryUpdateView(APIView):
         else:
             return Response(serializer.errors)    
 
-    def path(self, request, pk):
+    def patch(self, request, pk):
         category= Category.objects.get(pk=pk)            
         serializer= CategorySerializer(category, data=request.data)
         if serializer.is_valid():
