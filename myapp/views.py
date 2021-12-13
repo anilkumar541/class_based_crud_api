@@ -45,6 +45,16 @@ class CategoryUpdateView(APIView):
         else:
             return Response(serializer.errors)    
 
+    def path(self, request, pk):
+        category= Category.objects.get(pk=pk)            
+        serializer= CategorySerializer(category, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors) 
+
+
 class CategoryDeleteView(APIView):
     def delete(self, request, pk):
         category= Category.objects.get(pk=pk) 
