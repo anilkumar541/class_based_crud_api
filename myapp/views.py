@@ -6,10 +6,15 @@ from rest_framework.views import APIView
 from myapp.models import Category
 from myapp.serializers import CategorySerializer
 from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 
 class CategoryListView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication
+    ]
     def get(self, request):
         category = Category.objects.all()
         serializer= CategorySerializer(category, many=True)
