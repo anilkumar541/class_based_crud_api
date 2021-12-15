@@ -13,20 +13,23 @@ from rest_framework.permissions import IsAuthenticated
 
 class CategoryListView(APIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication
-    ]
+    authentication_classes = [JWTAuthentication]
     def get(self, request):
         category = Category.objects.all()
         serializer= CategorySerializer(category, many=True)
         return Response(serializer.data)
 
 class CategioryDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     def get(self, request, pk):
         category = Category.objects.get(pk=pk)
         serializer= CategorySerializer(category, many=False)
         return Response(serializer.data)    
 
 class CategoryCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     def post(self, request):
         serializer= CategorySerializer(data=request.data)    
         if serializer.is_valid():
@@ -36,6 +39,8 @@ class CategoryCreateView(APIView):
             return Response(serializer.errors)
 
 class CategoryUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     def get(self, request, pk):
         category = Category.objects.get(pk=pk)
         serializer= CategorySerializer(category, many=False)
@@ -61,6 +66,8 @@ class CategoryUpdateView(APIView):
 
 
 class CategoryDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     def delete(self, request, pk):
         category= Category.objects.get(pk=pk) 
         category.delete()
